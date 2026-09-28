@@ -1,0 +1,41 @@
+<h2>{{ id ? 'Edit' : 'New' }} product</h2>
+
+<form class="card" [formGroup]="form" (ngSubmit)="save()" novalidate>
+  <div class="field">
+    <label for="name">Name *</label>
+    <input id="name" type="text" formControlName="name" maxlength="100" />
+    @if (hasError('name', 'required')) {
+      <small class="error">Name is required.</small>
+    }
+  </div>
+
+  <div class="field">
+    <label for="description">Description</label>
+    <textarea id="description" rows="3" formControlName="description" maxlength="500"></textarea>
+  </div>
+
+  <div class="row">
+    <div class="field">
+      <label for="price">Price *</label>
+      <input id="price" type="number" step="0.01" min="0" formControlName="price" />
+      @if (hasError('price', 'required') || hasError('price', 'min')) {
+        <small class="error">Enter a price of 0 or more.</small>
+      }
+    </div>
+
+    <div class="field">
+      <label for="quantity">Quantity *</label>
+      <input id="quantity" type="number" step="1" min="0" formControlName="quantity" />
+      @if (hasError('quantity', 'required') || hasError('quantity', 'min') || hasError('quantity', 'pattern')) {
+        <small class="error">Enter a whole number of 0 or more.</small>
+      }
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button type="submit" class="btn primary" [disabled]="saving()">
+      {{ saving() ? 'Saving…' : 'Save' }}
+    </button>
+    <a class="btn" routerLink="/products">Cancel</a>
+  </div>
+</form>

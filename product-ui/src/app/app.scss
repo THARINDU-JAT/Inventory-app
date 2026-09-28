@@ -1,0 +1,24 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 0.85rem 1.5rem;
+  background: #1976d2;
+  color: #fff;
+
+  .brand { font-weight: 700; font-size: 1.15rem; }
+
+  a {
+    color: #e3f2fd;
+    text-decoration: none;
+    padding-bottom: 2px;
+
+    &.active { color: #fff; border-bottom: 2px solid #fff; }
+  }
+}
+
+.container {
+  max-width: 1000px;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
