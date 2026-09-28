@@ -6,11 +6,12 @@ import { Page } from '../../core/models/page.model';
 import { Product } from '../../core/models/product.model';
 import { NotificationService } from '../../core/services/notification.service';
 import { ProductService } from '../../core/services/product.service';
+import { InventorySceneComponent } from './inventory-scene.component';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [RouterLink, CurrencyPipe],
+  imports: [RouterLink, CurrencyPipe, InventorySceneComponent],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'
 })

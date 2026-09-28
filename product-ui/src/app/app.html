@@ -1,8 +1,20 @@
-<header class="navbar">
-  <span class="brand">Product Manager</span>
-  <nav>
-    <a routerLink="/products" routerLinkActive="active">Products</a>
+<header class="topbar">
+  <a class="brand" routerLink="/products" aria-label="Stockroom home">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <span class="brand-copy">
+      <strong>Stockroom</strong>
+      <small>INVENTORY</small>
+    </span>
+  </a>
+
+  <nav aria-label="Main navigation">
+    <a routerLink="/products" routerLinkActive="active">
+      <span class="nav-indicator" aria-hidden="true"></span>
+      Products
+    </a>
   </nav>
+
+  <span class="workspace-label"><span aria-hidden="true"></span>Product workspace</span>
 </header>
 
 <main class="container">

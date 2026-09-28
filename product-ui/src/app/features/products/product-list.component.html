@@ -1,48 +1,81 @@
-<div class="header">
-  <h2>Products</h2>
-  <a class="btn primary" routerLink="new">+ Add product</a>
-</div>
+<section class="inventory-intro">
+  <div class="intro-copy">
+    <p class="eyebrow"><span></span> Inventory / Product catalog</p>
+    <h1>Product catalog</h1>
+    <p class="intro-description">A clear view of the products you keep in stock.</p>
+    <a class="btn primary add-button" routerLink="new"><span aria-hidden="true">+</span> Add product</a>
+  </div>
+  <div class="scene-stage" aria-hidden="true">
+    <div class="scene-halo"></div>
+    <app-inventory-scene />
+    <span class="scene-caption">YOUR INVENTORY, IN VIEW</span>
+  </div>
+</section>
 
 @if (loading()) {
-  <p class="muted">Loading…</p>
+  <div class="loading-state" role="status" aria-live="polite">
+    <span class="loading-mark" aria-hidden="true"></span>
+    <span>Loading products</span>
+  </div>
 } @else {
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th class="num">Price</th>
-        <th class="num">Qty</th>
-        <th class="actions">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (p of products(); track p.id) {
+  <section class="catalog-panel" aria-labelledby="catalog-heading">
+    <div class="catalog-toolbar">
+      <div>
+        <p class="eyebrow">THE COLLECTION</p>
+        <h2 id="catalog-heading">All products</h2>
+      </div>
+      <span class="view-count"><strong>{{ products().length }}</strong> on this page</span>
+    </div>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Description</th>
+            <th class="num">Unit price</th>
+            <th class="num">Quantity</th>
+            <th class="actions">Manage</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of products(); track p.id) {
         <tr>
-          <td>{{ p.id }}</td>
-          <td>{{ p.name }}</td>
-          <td>{{ p.description }}</td>
-          <td class="num">{{ p.price | currency }}</td>
-          <td class="num">{{ p.quantity }}</td>
+          <td>
+            <div class="product-name">{{ p.name }}</div>
+            <span class="product-id">SKU-{{ p.id }}</span>
+          </td>
+          <td class="description-cell">{{ p.description || 'No description' }}</td>
+          <td class="num price-cell">{{ p.price | currency }}</td>
+          <td class="num quantity-cell"><span>{{ p.quantity }}</span><small>units</small></td>
           <td class="actions">
-            <a class="btn" [routerLink]="[p.id, 'edit']">Edit</a>
-            <button type="button" class="btn danger" (click)="remove(p)">Delete</button>
+            <a class="btn row-action" [routerLink]="[p.id, 'edit']" [attr.aria-label]="'Edit ' + p.name">Edit</a>
+            <button type="button" class="btn danger row-action" (click)="remove(p)" [attr.aria-label]="'Delete ' + p.name">Delete</button>
           </td>
         </tr>
-      } @empty {
-        <tr>
-          <td colspan="6" class="muted center">No products found.</td>
-        </tr>
-      }
-    </tbody>
-  </table>
-
-  @if (pageInfo().totalPages > 1) {
-    <div class="pager">
-      <button type="button" class="btn" (click)="previous()" [disabled]="pageInfo().number === 0">Previous</button>
-      <span>Page {{ pageInfo().number + 1 }} of {{ pageInfo().totalPages }} ({{ pageInfo().totalElements }} items)</span>
-      <button type="button" class="btn" (click)="next()" [disabled]="pageInfo().number >= pageInfo().totalPages - 1">Next</button>
+          } @empty {
+            <tr>
+              <td colspan="5" class="empty-cell">
+                <span class="empty-mark" aria-hidden="true">+</span>
+                <strong>No products yet</strong>
+                <span>Add your first product to start building the catalog.</span>
+                <a class="btn primary" routerLink="new">Add a product</a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
     </div>
-  }
+
+    <div class="list-footer">
+      <span>{{ pageInfo().totalElements }} products in catalog</span>
+      @if (pageInfo().totalPages > 1) {
+        <div class="pager" aria-label="Product pages">
+          <button type="button" class="btn page-button" (click)="previous()" [disabled]="pageInfo().number === 0" aria-label="Previous page">←</button>
+          <span>Page <strong>{{ pageInfo().number + 1 }}</strong> of {{ pageInfo().totalPages }}</span>
+          <button type="button" class="btn page-button" (click)="next()" [disabled]="pageInfo().number >= pageInfo().totalPages - 1" aria-label="Next page">→</button>
+        </div>
+      }
+    </div>
+  </section>
 }
