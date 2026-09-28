@@ -1,0 +1,18 @@
+-- Reference DDL (use with Flyway/Liquibase in production)
+CREATE DATABASE IF NOT EXISTS product_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+CREATE USER IF NOT EXISTS 'root'@'localhost' IDENTIFIED BY 'localdb';
+GRANT ALL PRIVILEGES ON product_db.* TO 'root'@'localhost';
+FLUSH PRIVILEGES;
+
+USE product_db;
+
+CREATE TABLE IF NOT EXISTS products (
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name        VARCHAR(100)  NOT NULL,
+    description VARCHAR(500),
+    price       DECIMAL(10,2) NOT NULL,
+    quantity    INT           NOT NULL,
+    created_at  DATETIME(6),
+    updated_at  DATETIME(6)
+);
