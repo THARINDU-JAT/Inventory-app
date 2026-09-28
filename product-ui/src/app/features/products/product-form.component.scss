@@ -51,9 +51,40 @@
 .error { margin-top: 0.35rem; color: #a34838; font-size: 0.73rem; }
 .buttons { display: flex; gap: 0.6rem; margin-top: 0.35rem; padding-top: 1.2rem; border-top: 1px solid #edf0eb; }
 
+.editor-dialog {
+  width: min(680px, calc(100vw - 2rem));
+  max-height: min(90vh, 820px);
+  padding: 1.8rem;
+  overflow: auto;
+  border: 1px solid #e1e7df;
+  border-radius: 8px;
+  background: #fbfcf9;
+  box-shadow: 0 24px 70px rgba(26, 43, 33, 0.24);
+  color: #26372e;
+
+  &::backdrop { background: rgba(22, 34, 27, 0.42); backdrop-filter: blur(3px); }
+}
+
+.dialog-topline { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.dialog-topline .eyebrow { margin: 0 0 0.4rem; }
+.dialog-topline h2 { margin: 0; font-family: Georgia, 'Times New Roman', serif; font-size: 1.8rem; font-weight: 500; }
+.dialog-description { margin: 0.55rem 0 1.2rem; color: #78857c; font-size: 0.83rem; }
+.dialog-close { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid #e0e6df; border-radius: 50%; background: #fff; color: #6e7d72; font-size: 1.35rem; line-height: 1; cursor: pointer; }
+.dialog-close:hover { background: #f0f4ef; color: #26372e; }
+.modal-panel { max-width: none; padding: 0; border: 0; background: transparent; box-shadow: none; }
+.modal-panel .buttons { padding-bottom: 0.2rem; }
+.form-loading { display: flex; align-items: center; justify-content: center; min-height: 220px; gap: 0.7rem; color: #77847b; font-size: 0.85rem; }
+.form-loading > span { width: 16px; height: 16px; border: 2px solid #d6e0d7; border-top-color: #ed7049; border-radius: 50%; animation: form-loading-spin 800ms linear infinite; }
+.editor-dialog[open] { animation: editor-dialog-in 180ms ease-out both; }
+
+@keyframes form-loading-spin { to { transform: rotate(360deg); } }
+@keyframes editor-dialog-in { from { opacity: 0; transform: translateY(10px) scale(0.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
 @media (max-width: 560px) {
   .form-heading h1 { font-size: 2rem; }
   .form-panel { padding: 1.2rem 1rem 1.3rem; }
   .field-row { flex-direction: column; gap: 0; }
   .form-panel-heading small { max-width: 125px; text-align: right; line-height: 1.4; }
+  .editor-dialog { padding: 1.25rem 1rem; }
+  .dialog-topline h2 { font-size: 1.55rem; }
 }

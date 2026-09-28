@@ -119,6 +119,31 @@ h1, h2 { color: #202d27; }
 
 app-inventory-scene { position: absolute; inset: 0; display: block; }
 
+.confirm-dialog {
+  width: min(440px, calc(100vw - 2rem));
+  padding: 2rem;
+  border: 1px solid #e1e7df;
+  border-radius: 8px;
+  background: #fffefa;
+  box-shadow: 0 24px 70px rgba(26, 43, 33, 0.22);
+  color: #26372e;
+
+  &::backdrop { background: rgba(22, 34, 27, 0.42); backdrop-filter: blur(3px); }
+}
+
+.dialog-symbol { display: grid; place-items: center; width: 42px; height: 42px; margin-bottom: 1.1rem; border-radius: 50%; font-family: Georgia, 'Times New Roman', serif; font-size: 1.4rem; }
+.delete-symbol { background: #fff0ea; color: #b75b43; }
+.dialog-eyebrow { margin: 0 0 0.45rem; color: #9a786c; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.13em; }
+.confirm-dialog h2 { margin: 0; font-family: Georgia, 'Times New Roman', serif; font-size: 1.55rem; font-weight: 500; }
+.dialog-copy { margin: 0.75rem 0 1.6rem; color: #78847b; font-size: 0.86rem; line-height: 1.6; }
+.dialog-copy strong { color: #3c4c41; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 0.55rem; }
+.confirm-delete { background: #a84f3a !important; border-color: #a84f3a !important; color: #fff !important; }
+.confirm-delete:hover:not(:disabled) { background: #873c2c !important; border-color: #873c2c !important; }
+.confirm-dialog[open] { animation: dialog-in 160ms ease-out both; }
+
+@keyframes dialog-in { from { opacity: 0; transform: translateY(8px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
 @media (max-width: 760px) {
   .inventory-intro { min-height: 245px; padding: 2rem 1.5rem; }
   .scene-stage { right: -5%; width: 48%; opacity: 0.75; }

@@ -3,7 +3,7 @@
     <p class="eyebrow"><span></span> Inventory / Product catalog</p>
     <h1>Product catalog</h1>
     <p class="intro-description">A clear view of the products you keep in stock.</p>
-    <a class="btn primary add-button" routerLink="new"><span aria-hidden="true">+</span> Add product</a>
+    <button type="button" class="btn primary add-button" (click)="openEditor()"><span aria-hidden="true">+</span> Add product</button>
   </div>
   <div class="scene-stage" aria-hidden="true">
     <div class="scene-halo"></div>
@@ -49,7 +49,7 @@
           <td class="num price-cell">{{ p.price | currency }}</td>
           <td class="num quantity-cell"><span>{{ p.quantity }}</span><small>units</small></td>
           <td class="actions">
-            <a class="btn row-action" [routerLink]="[p.id, 'edit']" [attr.aria-label]="'Edit ' + p.name">Edit</a>
+            <button type="button" class="btn row-action" (click)="openEditor(p)" [attr.aria-label]="'Edit ' + p.name">Edit</button>
             <button type="button" class="btn danger row-action" (click)="remove(p)" [attr.aria-label]="'Delete ' + p.name">Delete</button>
           </td>
         </tr>
@@ -59,7 +59,7 @@
                 <span class="empty-mark" aria-hidden="true">+</span>
                 <strong>No products yet</strong>
                 <span>Add your first product to start building the catalog.</span>
-                <a class="btn primary" routerLink="new">Add a product</a>
+                <button type="button" class="btn primary" (click)="openEditor()">Add a product</button>
               </td>
             </tr>
           }
@@ -79,3 +79,27 @@
     </div>
   </section>
 }
+
+@if (editorOpen()) {
+  <app-product-form
+    [modal]="true"
+    [productId]="editingProduct()?.id ?? null"
+    (closed)="closeEditor()"
+    (saved)="onProductSaved()"
+  />
+}
+
+<dialog #deleteDialog class="confirm-dialog" aria-labelledby="delete-title" (click)="onDeleteDialogClick($event)" (cancel)="onDeleteDialogCancel()">
+  @if (pendingDelete(); as product) {
+    <div class="dialog-symbol delete-symbol" aria-hidden="true">!</div>
+    <p class="dialog-eyebrow">REMOVE FROM CATALOG</p>
+    <h2 id="delete-title">Delete this product?</h2>
+    <p class="dialog-copy"><strong>{{ product.name }}</strong> will be permanently removed from your inventory. This action cannot be undone.</p>
+    <div class="dialog-actions">
+      <button type="button" class="btn" (click)="cancelDelete()" [disabled]="deleting()">Keep product</button>
+      <button type="button" class="btn danger confirm-delete" (click)="confirmDelete()" [disabled]="deleting()">
+        {{ deleting() ? 'Deleting…' : 'Delete product' }}
+      </button>
+    </div>
+  }
+</dialog>

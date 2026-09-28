@@ -18,7 +18,7 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
 function toMessage(error: HttpErrorResponse): string {
   if (error.status === 0) {
-    return 'Cannot reach the server. Please check your connection.';
+    return 'Unable to reach the inventory service. Check the server connection and try again.';
   }
 
   // Backend returns RFC 7807 ProblemDetail: { detail, errors? }
@@ -27,5 +27,10 @@ function toMessage(error: HttpErrorResponse): string {
   if (error.status === 400 && body?.errors) {
     return Object.values(body.errors).join(' • ');
   }
-  return body?.detail ?? `Request failed (${error.status})`;
+  if (body?.detail) return body.detail;
+  if (error.status === 403) return 'You do not have permission to make this change.';
+  if (error.status === 404) return 'This product could not be found. Refresh the catalog and try again.';
+  if (error.status === 409) return 'This product changed elsewhere. Refresh the catalog and try again.';
+  if (error.status >= 500) return 'The server could not complete this request. Try again shortly.';
+  return `The request could not be completed (${error.status}).`;
 }

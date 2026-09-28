@@ -1,34 +1,58 @@
 .toast-container {
   position: fixed;
-  top: 1rem;
-  right: 1rem;
+  top: 1.1rem;
+  right: 1.1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.65rem;
   z-index: 1000;
+  width: min(420px, calc(100vw - 2rem));
 }
 
 .toast {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  min-width: 260px;
-  max-width: 420px;
-  padding: 0.75rem 1rem;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid #cfe3d4;
+  border-left: 3px solid #3b9a69;
   border-radius: 6px;
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: #fbfffc;
+  color: #2f4638;
+  box-shadow: 0 12px 34px rgba(28, 48, 35, 0.16);
+  animation: toast-enter 180ms ease-out both;
 
-  &.success { background: #2e7d32; }
-  &.error { background: #c62828; }
+  &.error { border-color: #efdad1; border-left-color: #bd5a40; background: #fffaf8; color: #603a30; }
 
   button {
-    background: none;
-    border: none;
-    color: inherit;
-    font-size: 1.25rem;
+    display: grid;
+    flex: 0 0 28px;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    margin: -0.25rem -0.3rem 0 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: #76847a;
+    font-size: 1.2rem;
     cursor: pointer;
     line-height: 1;
+
+    &:hover { background: rgba(56, 76, 62, 0.08); }
+    &:focus-visible { outline: 2px solid #4c9a78; outline-offset: 1px; }
   }
+}
+
+.toast-icon { display: grid; flex: 0 0 25px; place-items: center; width: 25px; height: 25px; border-radius: 50%; background: #e9f5ec; color: #32875b; font-size: 0.78rem; font-weight: 800; }
+.error .toast-icon { background: #fbece6; color: #ac5038; }
+.toast-copy { display: grid; flex: 1; gap: 0.2rem; min-width: 0; padding-top: 0.03rem; }
+.toast-copy strong { font-size: 0.78rem; }
+.toast-copy > span { overflow-wrap: anywhere; color: #718077; font-size: 0.76rem; line-height: 1.4; }
+.error .toast-copy > span { color: #80685f; }
+
+@keyframes toast-enter { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 520px) {
+  .toast-container { top: 0.7rem; right: 0.7rem; width: calc(100vw - 1.4rem); }
 }

@@ -1,17 +1,38 @@
-<div class="form-heading">
-  <a class="back-link" routerLink="/products"><span aria-hidden="true">←</span> All products</a>
-  <p class="eyebrow">CATALOG ENTRY</p>
-  <h1>{{ id ? 'Edit product' : 'Add a product' }}</h1>
-  <p>Keep the details accurate so your catalog stays useful.</p>
-</div>
-
-<form class="form-panel" [formGroup]="form" (ngSubmit)="save()" novalidate>
-  <div class="form-panel-heading">
-    <span class="section-number">01</span>
-    <span>Product details</span>
-    <small>Fields marked * are required</small>
+@if (modal) {
+  <dialog #formDialog class="editor-dialog" aria-labelledby="form-title" (click)="onDialogClick($event)" (cancel)="onDialogCancel()">
+    <div class="dialog-topline">
+      <div>
+        <p class="eyebrow">CATALOG ENTRY</p>
+        <h2 id="form-title">{{ id ? 'Edit product' : 'Add a product' }}</h2>
+      </div>
+      <button type="button" class="dialog-close" aria-label="Close dialog" (click)="cancel()">×</button>
+    </div>
+    <p class="dialog-description">Keep the details accurate so your catalog stays useful.</p>
+    @if (loadingProduct()) {
+      <div class="form-loading" role="status"><span aria-hidden="true"></span>Loading product details</div>
+    } @else {
+      <ng-container [ngTemplateOutlet]="productEditor"></ng-container>
+    }
+  </dialog>
+} @else {
+  <div class="form-heading">
+    <a class="back-link" routerLink="/products"><span aria-hidden="true">←</span> All products</a>
+    <p class="eyebrow">CATALOG ENTRY</p>
+    <h1>{{ id ? 'Edit product' : 'Add a product' }}</h1>
+    <p>Keep the details accurate so your catalog stays useful.</p>
   </div>
+  <ng-container [ngTemplateOutlet]="productEditor"></ng-container>
+}
 
+<ng-template #productEditor>
+<form class="form-panel" [class.modal-panel]="modal" [formGroup]="form" (ngSubmit)="save()" novalidate>
+  @if (!modal) {
+    <div class="form-panel-heading">
+      <span class="section-number">01</span>
+      <span>Product details</span>
+      <small>Fields marked * are required</small>
+    </div>
+  }
   <div class="field">
     <label for="name">Name *</label>
     <input id="name" type="text" formControlName="name" maxlength="100" autocomplete="off" />
@@ -44,9 +65,10 @@
   </div>
 
   <div class="buttons">
-    <button type="submit" class="btn primary" [disabled]="saving()">
+    <button type="submit" class="btn primary" [disabled]="saving() || loadingProduct()">
       {{ saving() ? 'Saving…' : (id ? 'Save changes' : 'Add product') }}
     </button>
-    <a class="btn" routerLink="/products">Cancel</a>
+    <button type="button" class="btn" (click)="cancel()" [disabled]="saving()">Cancel</button>
   </div>
 </form>
+</ng-template>
